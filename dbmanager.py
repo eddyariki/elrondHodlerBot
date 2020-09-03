@@ -46,6 +46,8 @@ class DBManager:
             self.cursor = self.connection.cursor()
             self.cursor.execute("INSERT OR IGNORE INTO  wallets (address, tx_id, date) VALUES (?,?,?)", (address, tx_id, date))
             self.connection.commit()
+
+            
             self.connection.close()
             print("Insertion to SQLite DB was successful")
         

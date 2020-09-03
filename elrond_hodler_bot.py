@@ -158,6 +158,7 @@ def command_tx(message):
                                 if(chat_mem.user.id==message.from_user.id):
                                     utc_time = int(time.time())
                                     db.insert(str(sender), str(tx_id), utc_time)
+                                    db.backup(file_loc+"backup")
                                     bot.send_message(message.chat.id,f"""
 Success✅ Stored:
 
