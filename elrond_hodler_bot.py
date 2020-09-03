@@ -24,6 +24,44 @@ accepted_group = config['accepted_group']
 bot_address = config['bot_address']
 crypto = Encryption("")
 db = DBManager(file_loc+"data/test.db")
+how_to = """
+[1]. Send transaction
+
+*TO*: Bot's address
+
+*MESSAGE*: Encrypted user ID (NOT ENCRYPTION KEY)
+
+*FEE*: Fee changes with message size, make sure you adjust. 
+
+
+[2]. Confirm transaction and verify
+
+Do /transaction transaction_hash encryption_key
+
+[3]. Successful
+
+If decryption is successful, username matches, and user is in whitelisted group:
+
+-Wallet Address
+
+-Transaction Hash
+
+-Timestamp
+
+Will be stored in database. 
+
+[4]. Optional:
+
+Do /verify wallet_address encryption_key
+
+This will verify ownership of wallet and send it to groupchat to prove it to members.
+
+[5]. See group's value
+
+Do /totalvalue in the groupchat to see total value
+"""
+
+
 
 """
 --------------------------------------------------------------------------
@@ -59,6 +97,7 @@ def command_start(message):
     args = message.text.split(" ")
     if(len(args)>1):
         if(args[1]=="register"):
+            bot.send_message(message.chat.id, how_to, parse_mode='Markdown')
             if(message.chat.type!="private"):
                 bot.delete_message(message.chat.id, message.message_id)
                 bot.send_message(message.chat.id, "Do not invoke this here! This is to be done in private.")
