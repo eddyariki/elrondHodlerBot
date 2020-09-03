@@ -9,14 +9,17 @@ class Encryption:
     def generate_key(self):
         try:
             key = Fernet.generate_key()
-            return key
+            with open('key.key', 'wb') as key_file:
+                key_file.write(key)
+
         except Exception as e:
             print(e)
     
     def encrypt(self, text):
         try:
             #get key
-            key = self.generate_key()
+            with open(self.location+'key.key', 'rb') as file:
+                key = file.read()
             
 
             #encode text
@@ -27,19 +30,17 @@ class Encryption:
             encrypted = f.encrypt(encoded)
 
             #return as string
-            return encrypted.decode(), key.decode()
+            return encrypted.decode()
 
         except Exception as e:
             print(e)
     
-    def decrypt(self,encrypted,key):
+    def decrypt(self,encrypted):
         try:
-            #get key
-            # if(key==None):
-            #     with open(self.location+'key.key', 'rb') as file:
-            #         key = file.read()
-            
 
+            with open(self.location+'key.key', 'rb') as file:
+                key = file.read()
+            
             #turn to bytes
             encoded = base64.b64decode(encrypted).decode('utf-8')
             encoded = encoded.encode()
@@ -58,4 +59,8 @@ class Encryption:
         except Exception as e:
             print(e)
 
+if __name__ == "__main__":
+    fileloc = ""
+    e = Encryption(fileloc)
+    e.generate_key()
 
